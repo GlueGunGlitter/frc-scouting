@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FRC Scouting App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>FRC Scouting App</h1>
+    <h2>Autonomous</h2>
+    <div class = "startPoint" style="margin-top: 20px; text-align: center">
+        <h3>Robot Starting Position</h3>
+    <select id="Starting Point">
+  <option value="A">A</option>  
+  <option value="B">B</option> 
+  <option value="C">C</option> 
+    </select>  
+</div> 
+<div class = "Crossed The Line" style="margin-top: 20px; text-align: center;">
+<h4> Crossed The Line </h4> 
+<form action="/action_page.php">
+  <input type="checkbox" id="cross" name="CrossedLine" value="Crossed">
+  <label for="Crossed">Robot Crossed The Line</label><br>
+  </form>
+</div>
+<div class = "auto_score" style="margin-top: 20px; text-align: center;" >    
+<button id="addPointBtn">Add Point</button>
+         <button id="removePointBtn">Remove Point</button>
+    <p>Score: <span id="score">0</span></p>
+    <script src="app.js"></script>
+    </div>
+    
+</body>
+</html>

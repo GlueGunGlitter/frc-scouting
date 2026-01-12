@@ -5,6 +5,10 @@ body {
     .startPoint{
     justify-content: space-around;
     }
+
+    #startingPoint{
+        font-size: 20px;
+    }
     
     
 }
@@ -13,5 +17,52 @@ button {
     font-size: 20px;
     padding: 10px 20px;
 }
+.auto_score {
+    text-align: center; /* centers everything inside */
+    margin-top: 60px;
+    font-size: 20px;
+}    
+.auto_score{
+    justify-content: space-around;
+    font-size: 20px;
+}
+.auto-score-title {
+    font-size: 100px; /* change this number to make it bigger or smaller */
+    margin-bottom: 10px; /* optional, space between text and buttons */
+}
 
-.auto_score{justify-content: space-around;}
+.auto_miss{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+
+.auto_climb{
+    text-align: center;
+    margin-top: 40px;
+}
+
+    #Auto_Climb{
+        font-size: 20px;
+    }
+
+.crossed-the-line{
+    font-size: 20px;
+}
+
+.collection{
+     text-align: center;
+    margin-top: 20px;
+
+}
+input[type="checkbox"] {
+    transform: scale(1.5); /* 1.5x bigger; increase number for larger */
+    margin-right: 10px;    /* space between box and text */
+}
+
+/* Make the label text bigger */
+label[for="collect"] {
+    font-size: 20px; /* adjust as needed */
+}
+

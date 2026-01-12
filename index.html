@@ -8,28 +8,83 @@
 <body>
 
     <h1>FRC Scouting App</h1>
-    <h2>Autonomous</h2>
-    <div class = "startPoint" style="margin-top: 20px; text-align: center">
-        <h3>Robot Starting Position</h3>
-    <select id="Starting Point">
-  <option value="A">A</option>  
-  <option value="B">B</option> 
-  <option value="C">C</option> 
-    </select>  
-</div> 
-<div class = "Crossed The Line" style="margin-top: 20px; text-align: center;">
-<h4> Crossed The Line </h4> 
-<form action="/action_page.php">
-  <input type="checkbox" id="cross" name="CrossedLine" value="Crossed">
-  <label for="Crossed">Robot Crossed The Line</label><br>
-  </form>
-</div>
-<div class = "auto_score" style="margin-top: 20px; text-align: center;" >    
-<button id="addPointBtn">Add Point</button>
-         <button id="removePointBtn">Remove Point</button>
-    <p>Score: <span id="score">0</span></p>
-    <script src="app.js"></script>
+    <h1>Autonomous</h1>
+
+    <div class="startPoint" style="margin-top: 20px; text-align: center;">
+        <h2>Robot Starting Position</h2>
+        <select id="startingPoint">
+            <option value="A">A</option>  
+            <option value="B">B</option> 
+            <option value="C">C</option> 
+        </select>  
+    </div> 
+
+    <div class="crossed-the-line" style="margin-top: 20px; text-align: center;">
+        <h2>Crossed The Line</h2> 
+        <form action="/action_page.php">
+            <input type="checkbox" id="cross" name="CrossedLine" value="Crossed">
+            <label for="cross">Robot Crossed The Line</label><br>
+        </form>
     </div>
+
+    <!-- Auto Score Counter -->
+    <div class="auto_score">    
+        <h2>Times Scored</h2>
+        <button id="addPointBtn">Add Point</button>
+        <button id="removePointBtn">Remove Point</button>
+        <p>Score: <span id="score">0</span></p>
+    </div>
+
+    <!-- Times Missed Counter -->
+    <div class="auto_miss">    
+        <h2>Times Missed</h2>
+        <button id="addMissBtn">Add Miss</button>
+        <button id="removeMissBtn">Remove Miss</button>
+        <p>Misses: <span id="missCount">0</span></p>
+    </div>
+
+    <div class="auto_climb" style="margin-top: 20px; text-align: center;">
+        <h2>Climb</h2>
+        <select id="Auto_Climb">
+            <option value="A">Didn't try </option>  
+            <option value="B">Failed</option> 
+            <option value="C">Climbed</option> 
+        </select>  
+    </div> 
+
+    <div class="collection" >
+        <h2>Has The Robot Collected Balls?</h2> 
+        <form action="/action_page.php">
+            <input type="checkbox" id="collect" name="Collection" value="collected">
+            <label for="collect">Robot Collected Balls </label><br>
+        </form>
+    </div>
+
+    <h1>TeleOperated</h1>
+
+     <!-- tele Score Counter -->
+    <div class="tele_score">    
+        <h2>Times Scored</h2>
+        <button id="addPointBtn">Add Point</button>
+        <button id="removePointBtn">Remove Point</button>
+        <p>Score: <span id="score">0</span></p>
+    </div>
+
+    <!-- Times Missed Counter -->
+    <div class="tele_miss">    
+        <h2>Times Missed</h2>
+        <button id="addMissBtn">Add Miss</button>
+        <button id="removeMissBtn">Remove Miss</button>
+        <p>Misses: <span id="missCount">0</span></p>
+    </div>
+
+
+    
+
+
+
+    <!-- Load JS once at the end -->
+    <script src="app.js"></script>
     
 </body>
 </html>

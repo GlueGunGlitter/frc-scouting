@@ -6,9 +6,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <img src="logo.png" alt="Team Logo" class="top-right-logo">
+    <img src="shvilim.png" alt="School" class="top-left-logo">
 
-    <h1>FRC Scouting App</h1>
-    <h1>Autonomous</h1>
+
+
+    <h1 class=FRC-Scouting-App> 
+<h1 class="APP_header">FRC Scouting App</h1>
+
+   <div class="member_select counter">
+    <h2>Select Name</h2>
+    <select id="memberSelect">
+        <option value="">Select name</option>
+    </select>
+</div>
+
+
+    </div>
+    <div class="team_select">
+    <h2>Select Team</h2>
+    <select id="teamSelect">
+        <option value="">-- Select Team --</option>
+    </select>
+</div>
+<h1 class="section-title">Autonomous</h1>
 
     <div class="startPoint" style="margin-top: 20px; text-align: center;">
         <h2>Robot Starting Position</h2>
@@ -60,7 +81,7 @@
         </form>
     </div>
 
-    <h1>TeleOperated</h1>
+<h1 class="section-title">TeleOperated</h1>
 
 <!-- TeleOp Delivery Counter -->
 <div class="tele_delivery">    
@@ -87,10 +108,58 @@
     <p>Misses: <span id="teleMissCount">0</span></p>
 </div>
 
+<div class="obstacle_passed counter">
+    <h2>Passed Obstacle</h2>
+    <input type="checkbox" id="obstacleA" name="obstacle" value="A">
+    <label for="obstacleA">Obstacle A</label>
+
+    <input type="checkbox" id="obstacleB" name="obstacle" value="B">
+    <label for="obstacleB">Obstacle B</label>
+</div>
+
+<h1 class="section-title">Endgame</h1>
+
+ <div class="climb" style="margin-top: 20px; text-align: center;">
+        <h2>Climb</h2>
+        <select id="Climb">
+            <option value="A">Didn't try </option>  
+            <option value="B">Failed</option> 
+            <option value="C">Level 1</option>
+            <option value="D">Level 2</option>
+            <option value="E">Level 3</option>
+
+        </select>  
+    </div> 
+
+<div class="climb_direction" style="margin-top: 20px; text-align: center;">
+        <h2>Climb Direction</h2>
+        <select id="Climb_Direction">
+            <option value="A">Center</option>  
+            <option value="B">Left</option> 
+            <option value="C">Right</option>
+        </select>  
+    </div> 
+
+
+<h1>Post Game</h1>
+
+ <div class="WorkAuto" style="margin-top: 20px; text-align: center;">
+        <h2>Auto Worked</h2> 
+        <form action="/action_page.php">
+            <input type="checkbox" id="cross" name="AutoWorked" value="Worked">
+            <label for="cross">Robot Auto Worked</label><br>
+        </form>
+    </div>
+
+     <div class="RobotFailed" style="margin-top: 40px; text-align: center;">
+        <h2>Robot Failed</h2> 
+        <form action="/action_page.php">
+            <input type="checkbox" id="cross" name="RobotFailed" value="Failed">
+            <label for="cross">Robot Didn't Work</label><br>
+        </form>
+    </div>
 
     
-
-
 
     <!-- Load JS once at the end -->
     <script src="app.js"></script>

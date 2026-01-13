@@ -1,6 +1,33 @@
 body {
-    font-family: Arial, sans-serif;
+  font-family: "Times New Roman", Times, serif;
     padding: 20px;
+
+
+    background-color: #e10096;
+
+.top-right-logo {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 160px;      /* change size here */
+    height: auto;    /* keeps aspect ratio */
+}
+
+.top-left-logo {
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    width: 160px;      /* change size here */
+    height: auto;    /* keeps aspect ratio */
+}
+
+.section-title {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 30px;
+    font-size: 50px;
+}
+
 
     .startPoint{
     justify-content: space-around;
@@ -10,13 +37,41 @@ body {
         font-size: 20px;
     }
     
-    
+    .APP_header {
+    text-align: center; /* centers the text horizontally */
+
+
+        
+}
+
 }
 
 button {
     font-size: 20px;
     padding: 10px 20px;
 }
+
+.member_select {
+    text-align: center;
+    margin-top: 80px;
+    font-size: 20px;
+}
+
+#memberSelect {
+    font-size: 20px;
+}
+
+
+.team_select {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+#teamSelect {
+    font-size: 20px;
+}
+
 .auto_score {
     text-align: center; /* centers everything inside */
     margin-top: 60px;
@@ -47,6 +102,9 @@ button {
         font-size: 20px;
     }
 
+
+
+    
 .crossed-the-line{
     font-size: 20px;
 }
@@ -66,9 +124,46 @@ label[for="collect"] {
     font-size: 20px; /* adjust as needed */
 }
 
+
+
 .tele_delivery {
     text-align: center;
     margin-top: 40px;
+    font-size: 20px;
+}
+.tele_miss {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 20px;
+}
+
+.tele_score {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 20px;
+}
+
+.obstacle_passed {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 20px;
+}
+
+.obstacle_passed input[type="checkbox"] {
+    transform: scale(1.5); /* makes the checkboxes bigger */
+    margin: 0 10px 0 20px; /* spacing between checkbox and text */
+}
+
+.obstacle_passed label {
+    font-size: 20px; /* bigger text */
+    margin-right: 20px; /* space between checkboxes */
+}
+
+#Climb {
+    font-size: 20px;
+}
+
+#Climb_Direction {
     font-size: 20px;
 }
 

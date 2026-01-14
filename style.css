@@ -61,6 +61,17 @@ button {
     font-size: 20px;
 }
 
+.Game_Selection  {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+
+}
+#gameSelect{
+    font-size: 20px;
+}
+
+
 
 .team_select {
     text-align: center;
@@ -166,4 +177,8 @@ label[for="collect"] {
 #Climb_Direction {
     font-size: 20px;
 }
+
+
+
+
 

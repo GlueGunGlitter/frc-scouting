@@ -1,10 +1,8 @@
 const teamSelect = document.getElementById("teamSelect");
 
-
-
-
-
 const memberSelect = document.getElementById("memberSelect");
+
+const gameSelect = document.getElementById("gameSelect");
 
 fetch('members.txt')
   .then(response => response.text())
@@ -19,6 +17,21 @@ fetch('members.txt')
   })
   .catch(error => console.error("Error loading member list:", error));
 
+fetch('games.txt')
+  .then(response => response.text())
+  .then(data => {
+    const games =data.split('\n');
+    games.forEach(game =>{
+        const option = document.createElement("option");
+        option.value = game.trim();
+        option.textContent = game.trim();
+        gameSelect.appendChild(option);
+    });
+  })
+  .catch(error => console.error("Error loading game list:", error));
+
+
+
 // Load the teams from a text file
 fetch('teams.txt')
     .then(response => response.text())
@@ -32,6 +45,23 @@ fetch('teams.txt')
         });
     })
     .catch(error => console.error("Error loading team list:", error));
+
+
+    function displayValue() {
+    // 1. Get the input element using its ID
+    const inputElement = document.getElementById("userInput");
+
+    // 2. Get the value entered by the user
+    const inputValue = inputElement.value;
+
+    // 3. Use the value (e.g., display it in another HTML element)
+    const outputArea = document.getElementById("outputArea");
+    outputArea.textContent = "You typed: " + inputValue;
+
+    // Optional: Clear the input box after submission
+    inputElement.value = '';
+}
+
 
 
 // ================= AUTO =================
@@ -131,6 +161,7 @@ obstacleB.addEventListener("change", () => {
     console.log("Obstacle B passed:", obstacleB.checked);
 });
 //ENDGAME
+const climbSelect = document.getElementById("Climb");
 
 climbSelect.addEventListener("change", () => {
     selectedClimb = climbSelect.options[climbSelect.selectedIndex].text;

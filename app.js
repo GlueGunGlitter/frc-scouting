@@ -1,3 +1,41 @@
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwkCYxVNlXK2z3qy7hUece2ZVsoafbA_jBfgXsImd1gHF8Jo_LVPyEDQgtRILv_-W0bZg/exec';
+
+function displayValue() {
+    const data = {
+        'Scouter': document.getElementById("memberSelect").value,
+        'GameNum': document.getElementById("gameSelect").value,
+        'TeamNum': document.getElementById("teamSelect").value,
+        'StartPos': document.getElementById("startingPoint").value,
+        'AutoCross': document.getElementById("cross").checked,
+        'AutoScore': document.getElementById("score").textContent,
+        'AutoMiss': document.getElementById("missCount").textContent,
+        'AutoClimb': document.getElementById("Auto_Climb").value,
+        'AutoCollect': document.getElementById("collect").checked,
+        'TeleDeliveries': document.getElementById("teleDeliveryCount").textContent,
+        'TeleScore': document.getElementById("teleScore").textContent,
+        'TeleMiss': document.getElementById("teleMissCount").textContent,
+        'ObstacleA': document.getElementById("obstacleA").checked,
+        'ObstacleB': document.getElementById("obstacleB").checked,
+        'EndClimb': document.getElementById("Climb").value,
+        'EndClimbDir': document.getElementById("Climb_Direction").value,
+        'ScoringSpeed': document.getElementById("ScoringSpeed").value,
+        'Comments': document.getElementById("userInput").value
+    };
+
+    // Prepare data for Google Sheets
+    const formData = new FormData();
+    for (const key in data) { formData.append(key, data[key]); }
+
+    fetch(scriptURL, { method: 'POST', body: formData})
+        .then(response => {
+            alert("Data Submitted Successfully!");
+            window.location.reload(); // Optional: Clear form
+        })
+        .catch(error => console.error('Error!', error.message));
+}
+
+
+
 const teamSelect = document.getElementById("teamSelect");
 
 const memberSelect = document.getElementById("memberSelect");

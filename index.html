@@ -1,3 +1,4 @@
+<script src="app.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -150,21 +151,17 @@
 
 <h1 class ="section-title">PostGame</h1>
 
- <div class="WorkAuto" style="margin-top: 20px; text-align: center;">
-        <h2>Auto Worked</h2> 
-        <form action="/action_page.php">
-            <input type="checkbox" id="cross" name="AutoWorked" value="Worked">
-            <label for="cross">Robot Auto Worked</label><br>
-        </form>
-    </div>
+<div class="WorkAuto" style="margin-top: 20px; text-align: center;">
+    <h2>Auto Worked</h2> 
+    <input type="checkbox" id="autoWorked" name="AutoWorked" value="Worked">
+    <label for="autoWorked">Robot Auto Worked</label>
+</div>
 
      <div class="RobotFailed" style="margin-top: 40px; text-align: center;">
-        <h2>Robot Failed</h2> 
-        <form action="/action_page.php">
-            <input type="checkbox" id="cross" name="RobotFailed" value="Failed">
-            <label for="cross">Robot Didn't Work</label><br>
-        </form>
-    </div>
+    <h2>Robot Failed</h2> 
+    <input type="checkbox" id="robotFailed" name="RobotFailed" value="Failed">
+    <label for="robotFailed">Robot Didn't Work</label>
+</div>
 
     <div class="scroringspeed" style="margin-top: 20px; text-align: center;">
         <h2>How fast did the robot aim in order to score?</h2>
@@ -176,18 +173,11 @@
         </select>
     </div>
 
-    <div class = "typeInBox" style="margin-top: 20px; text-align: center;"
-        <meta charset="UTF-8">
-    <h2>Got anyrhing to say?</h2>
-    <!-- The 'input' element creates the text box -->
-    <input type="text" id="userInput" placeholder="Type something...">
-
-    <!-- The 'button' triggers a JavaScript function when clicked -->
-    <button onclick="displayValue()">Submit</button>
-
-    <!-- An element to display the output -->
-    <p>Your input will appear below:</p>
-    <div id="outputArea"></div>
+    <div class="submit-section" style="margin-top: 40px; text-align: center;">
+    <button id="finalSubmitBtn" onclick="submitToSheet()" style="padding: 15px 30px; font-size: 1.2em; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Submit Scouting Data
+    </button>
+    <p id="statusMsg"></p>
 </div>
 
 
@@ -197,7 +187,7 @@
     
 
     <!-- Load JS once at the end -->
-    <script src="app.js"></script>
+    
     
 </body>
 </html>

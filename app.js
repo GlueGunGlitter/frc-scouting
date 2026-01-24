@@ -155,7 +155,7 @@ function updatePendingUI() {
     const countEl = document.getElementById("pendingCount");
     if (countEl) {
         countEl.innerText = queue.length;
-        console.log("UI Updated. Count is now:", queue.length);
+        console.log("UI Updated. Count is now:", countEl);
     } else {
         console.warn("Element 'pendingCount' not found in HTML!");
     }

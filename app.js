@@ -41,25 +41,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// --- NEW: SYNC MANAGER (Add this inside your DOMContentLoaded listener) ---
+// --- 1. INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    // ... your existing fetch loaders and counter logic ...
-
-    // Automatically try to sync whenever the device regains internet
-    window.addEventListener('online', syncOfflineData);
-    
-    // Also try to sync once when the app first opens
-    syncOfflineData();
+    updatePendingUI();
+    window.addEventListener('online', syncData);
+    // Try to sync on startup if internet is available
+    if (navigator.onLine) syncData();
 });
 
-// --- UPDATED: SUBMIT FUNCTION ---
+// --- 2. THE MAIN SUBMIT ACTION ---
 function submitToSheet() {
     const btn = document.getElementById("finalSubmitBtn");
     btn.disabled = true;
-    btn.innerText = "Processing...";
+    btn.innerText = "Saving...";
 
-    // Gather data (Same as before)
-    const data = {
+    // Collect data from all your fields
+    const matchData = {
         'Scouter': document.getElementById("memberSelect").value,
         'GameNum': document.getElementById("gameSelect").value,
         'TeamNum': document.getElementById("teamSelect").value,
@@ -80,61 +77,74 @@ function submitToSheet() {
         'RobotFailed': document.getElementById("robotFailed").checked ? "Yes" : "No",
         'ScoringSpeed': document.getElementById("ScoringSpeed").value,
         'Comments': document.getElementById("userInput").value,
-        'Timestamp': new Date().toLocaleString() // Helpful for offline tracking
+        'id': Date.now() // Unique ID to track this specific match
     };
 
+    // ALWAYS save to local storage first
+    saveToLocalStorage(matchData);
+    
+    // Clear the form for the next match immediately
+    resetForm();
+    
+    // Attempt to sync if online
     if (navigator.onLine) {
-        // ONLINE: Send directly
-        sendToGoogle(data);
+        syncData();
     } else {
-        // OFFLINE: Save to queue
-        saveOffline(data);
-        alert("Offline! Data saved locally and will sync when you have internet.");
-        window.location.reload(); 
+        alert("Offline: Match saved to device. It will sync automatically when you have internet.");
     }
 }
 
-// Helper: Save data to localStorage
-function saveOffline(data) {
+// --- 3. STORAGE HELPERS ---
+function saveToLocalStorage(data) {
     let queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
     queue.push(data);
     localStorage.setItem('scoutingQueue', JSON.stringify(queue));
+    updatePendingUI();
 }
 
-// Helper: The actual Google Fetch
-function sendToGoogle(data) {
-    const formData = new URLSearchParams();
-    for (const key in data) { formData.append(key, data[key]); }
-
-    return fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
-        .then(() => {
-            alert("Success! Data sent.");
-            window.location.reload();
-        })
-        .catch(err => {
-            saveOffline(data); // If fetch fails for some reason, save it for later
-            console.error("Upload failed, saved to queue", err);
-        });
+function updatePendingUI() {
+    const queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
+    document.getElementById("pendingCount").innerText = queue.length;
 }
 
-// Helper: Sync all queued data
-function syncOfflineData() {
-    if (!navigator.onLine) return;
-
+// --- 4. THE SYNCER (Uploads Everything) ---
+async function syncData() {
     let queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
     if (queue.length === 0) return;
 
-    console.log(`Syncing ${queue.length} offline matches...`);
+    console.log(`Attempting to sync ${queue.length} matches...`);
 
-    // Send each match one by one
-    queue.forEach((data, index) => {
+    // Use a loop to send matches one by one
+    for (let i = 0; i < queue.length; i++) {
+        const match = queue[i];
         const formData = new URLSearchParams();
-        for (const key in data) { formData.append(key, data[key]); }
-        
-        fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' });
-    });
+        for (const key in match) { formData.append(key, match[key]); }
 
-    // Clear the queue after sending
+        try {
+            await fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' });
+            console.log(`Match ${match.id} synced.`);
+        } catch (err) {
+            console.error("Sync failed for match", match.id);
+            return; // Stop trying if we lost connection during the loop
+        }
+    }
+
+    // If we get here, all matches were sent
     localStorage.removeItem('scoutingQueue');
-    alert("Internet restored! All offline data has been synced to the sheet.");
+    updatePendingUI();
+    alert("All pending matches have been successfully synced to Google Sheets!");
+}
+
+// --- 5. RESET FORM (So you can do the next match) ---
+function resetForm() {
+    // Reset scores to 0
+    document.querySelectorAll('[id$="score"], [id$="Count"]').forEach(el => el.innerText = "0");
+    // Uncheck boxes
+    document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+    // Clear text
+    document.getElementById("userInput").value = "";
+    // Re-enable button
+    const btn = document.getElementById("finalSubmitBtn");
+    btn.disabled = false;
+    btn.innerText = "Submit Scouting Data";
 }

@@ -174,7 +174,12 @@
     <div class="typeInBox" style="margin-top: 20px; text-align: center;">
     <h2>Got anything to say?</h2>
     <input type="text" id="userInput" placeholder="Type something...">
-    
+
+    <div id="syncStatus" style="text-align: center; margin: 10px; color: #666; font-weight: bold;">
+    Matches waiting to sync: <span id="pendingCount">0</span>
+</div>
+
+
     <div class="submit-section" style="margin-top: 40px; text-align: center;"></div>
     <button type="button" id="finalSubmitBtn" onclick="submitToSheet()">Submit Scouting Data</button>
     <div id="outputArea"></div>

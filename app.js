@@ -150,3 +150,28 @@ function resetForm() {
     btn.disabled = false;
     btn.innerText = "Submit Scouting Data";
 }
+// --- Place this at the very bottom of your app.js ---
+
+function updatePendingUI() {
+    // 1. Get the current list from storage
+    const queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
+    
+    // 2. Find the element on the page
+    const countEl = document.getElementById("pendingCount");
+    
+    // 3. Update the number only if the element exists
+    if (countEl) {
+        countEl.innerText = queue.length;
+        
+        // Optional: Change color if there are pending matches
+        countEl.style.color = queue.length > 0 ? "red" : "green";
+    }
+}
+
+// --- Force update whenever storage changes (even in other tabs) ---
+window.addEventListener('storage', (e) => {
+    if (e.key === 'scoutingQueue') {
+        updatePendingUI();
+    }
+});
+

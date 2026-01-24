@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function submitToSheet() {
     const btn = document.getElementById("finalSubmitBtn");
     btn.disabled = true;
-    btn.innerText = "Saving Match...";
+    btn.innerText = "Saving...";
 
     try {
         const matchData = {
@@ -61,39 +61,51 @@ function submitToSheet() {
             'GameNum': document.getElementById("gameSelect").value,
             'TeamNum': document.getElementById("teamSelect").value,
             'StartPos': document.getElementById("startingPoint").value,
-            'AutoCross': document.getElementById("autoCross").checked ? "Yes" : "No",
+            'AutoCross': document.getElementById("autoCross")?.checked ? "Yes" : "No",
             'AutoScore': document.getElementById("score").innerText,
             'AutoMiss': document.getElementById("missCount").innerText,
             'AutoClimb': document.getElementById("Auto_Climb").value,
-            'AutoCollect': document.getElementById("collect").checked ? "Yes" : "No",
+            'AutoCollect': document.getElementById("collect")?.checked ? "Yes" : "No",
             'TeleDeliveries': document.getElementById("teleDeliveryCount").innerText,
             'TeleScore': document.getElementById("teleScore").innerText,
             'TeleMiss': document.getElementById("teleMissCount").innerText,
-            'ObstacleA': document.getElementById("obstacleA").checked ? "Yes" : "No",
-            'ObstacleB': document.getElementById("obstacleB").checked ? "Yes" : "No",
+            'ObstacleA': document.getElementById("obstacleA")?.checked ? "Yes" : "No",
+            'ObstacleB': document.getElementById("obstacleB")?.checked ? "Yes" : "No",
             'EndClimb': document.getElementById("Climb").value,
             'EndClimbDir': document.getElementById("Climb_Direction").value,
-            'AutoWorked': document.getElementById("autoWorked").checked ? "Yes" : "No",
-            'RobotFailed': document.getElementById("robotFailed").checked ? "Yes" : "No",
+            'AutoWorked': document.getElementById("autoWorked")?.checked ? "Yes" : "No",
+            'RobotFailed': document.getElementById("robotFailed")?.checked ? "Yes" : "No",
             'ScoringSpeed': document.getElementById("ScoringSpeed").value,
             'Comments': document.getElementById("userInput").value,
             'id': Date.now()
         };
 
-        // Save to LocalStorage
+        // 1. Get existing queue
         let queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
+        
+        // 2. Add new match
         queue.push(matchData);
+        
+        // 3. Save back to storage
         localStorage.setItem('scoutingQueue', JSON.stringify(queue));
+        console.log("Match saved! Current queue size:", queue.length);
 
+        // 4. Update the UI number IMMEDIATELY
         updatePendingUI();
+        
+        // 5. Reset the form
         resetForm();
-        autoSync(); // Trigger a sync attempt immediately
+        
+        // 6. Only try to sync if online
+        if (navigator.onLine) {
+            autoSync();
+        }
 
     } catch (e) {
         btn.disabled = false;
         btn.innerText = "Submit Scouting Data";
-        console.error("Collection Error:", e);
-        alert("Error saving match. Check that all fields are correct.");
+        console.error("Critical Error saving match:", e);
+        alert("Check Console (F12) - an ID might be missing in your HTML.");
     }
 }
 
@@ -137,9 +149,16 @@ async function syncData() {
 
 // 5. HELPERS
 function updatePendingUI() {
-    const queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
+    const rawData = localStorage.getItem('scoutingQueue');
+    const queue = JSON.parse(rawData || "[]");
+    
     const countEl = document.getElementById("pendingCount");
-    if (countEl) countEl.innerText = queue.length;
+    if (countEl) {
+        countEl.innerText = queue.length;
+        console.log("UI Updated. Count is now:", queue.length);
+    } else {
+        console.warn("Element 'pendingCount' not found in HTML!");
+    }
 }
 
 function resetForm() {

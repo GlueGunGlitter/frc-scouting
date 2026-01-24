@@ -48,13 +48,11 @@
         </select>  
     </div> 
 
-    <div class="crossed-the-line" style="margin-top: 20px; text-align: center;">
-        <h2>Crossed The Line</h2> 
-        <form action="/action_page.php">
-            <input type="checkbox" id="cross" name="CrossedLine" value="Crossed">
-            <label for="cross">Robot Crossed The Line</label><br>
-        </form>
-    </div>
+   <div class="crossed-the-line" style="margin-top: 20px; text-align: center;">
+    <h2>Crossed The Line</h2> 
+    <input type="checkbox" id="autoCross" name="CrossedLine" value="Crossed">
+    <label for="autoCross">Robot Crossed The Line</label>
+</div>
 
     <!-- Auto Score Counter -->
     <div class="auto_score">    
@@ -173,8 +171,18 @@
         </select>
     </div>
 
-    <div class="submit-section" style="margin-top: 40px; text-align: center;">
-    <button id="finalSubmitBtn" onclick="submitToSheet()" style="padding: 15px 30px; font-size: 1.2em; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    <div class="typeInBox" style="margin-top: 20px; text-align: center;">
+    <h2>Got anything to say?</h2>
+    <input type="text" id="userInput" placeholder="Type something...">
+    
+    <div class="submit-section" style="margin-top: 40px; text-align: center;"></div>
+    <button type="button" id="finalSubmitBtn" onclick="submitToSheet()">Submit Scouting Data</button>
+    <div id="outputArea"></div>
+</div>
+
+    
+    
+
         Submit Scouting Data
     </button>
     <p id="statusMsg"></p>

@@ -177,6 +177,20 @@ label[for="collect"] {
 #Climb_Direction {
     font-size: 20px;
 }
+/* Disable double-tap zoom on all buttons and interactive elements */
+button, 
+select, 
+input, 
+.counter-display {
+    touch-action: manipulation;
+}
+
+/* Optional: Prevent text selection when tapping buttons fast */
+button {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
 
 
 

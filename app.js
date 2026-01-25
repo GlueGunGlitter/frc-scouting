@@ -179,12 +179,7 @@ function updatePendingUI() {
     const countEl = document.getElementById("pendingCount");
     
     // 3. Update the number only if the element exists
-    if (countEl) {
-        countEl.innerText = queue.length;
-        
-        // Optional: Change color if there are pending matches
-        countEl.style.color = queue.length > 0 ? "red" : "green";
-    }
+
 }
 
 // --- Force update whenever storage changes (even in other tabs) ---

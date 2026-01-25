@@ -1,5 +1,5 @@
 // 1. CONFIGURATION
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwzGx-v6WLsDPiA-uuXnHvRs77kIRnkdCUpw1BpZzVR-o6bswkM8dR-x8GHXpONxQ5XyA/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzZ7GvOmN8-DlDeXQseEsR_7SZFGkM8HyaiGDCwIDPANJzriRMINV3RmsOPHEWw_HDHeA/exec';
 let isSyncing = false; // Prevents multiple syncs from running at once
 
 // 2. INITIALIZATION (Runs when page loads)

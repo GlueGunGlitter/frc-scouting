@@ -6,3 +6,4 @@ exampleGame 5
 exampleGame 6
 exampleGame 7
 exampleGame 8
+exampleGame 9

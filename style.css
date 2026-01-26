@@ -1,198 +1,147 @@
 body {
-  font-family: "Times New Roman", Times, serif;
-    padding: 20px;
-
-
-    background-color: #e10096;
-
-.top-right-logo {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 160px;      /* change size here */
-    height: auto;    /* keeps aspect ratio */
-}
-
-.top-left-logo {
-    position: absolute;
-    top: 0px;
-    left: 20px;
-    width: 160px;      /* change size here */
-    height: auto;    /* keeps aspect ratio */
-}
-
-.section-title {
-    text-align: center;
-    margin-top: 60px;
-    margin-bottom: 30px;
-    font-size: 50px;
-}
-
-
-    .startPoint{
-    justify-content: space-around;
-    }
-
-    #startingPoint{
-        font-size: 20px;
+    background:#e10096;
+    font-family: "Times New Roman";
+    padding:20px;
+    
+    /* Make ALL text 2x bigger */
+    font-size:200%;
     }
     
-    .APP_header {
-    text-align: center; /* centers the text horizontally */
-
-
-        
-}
-
-}
-
-button {
-    font-size: 20px;
-    padding: 10px 20px;
-}
-
-.member_select {
-    text-align: center;
-    margin-top: 80px;
-    font-size: 20px;
-}
-
-#memberSelect {
-    font-size: 20px;
-}
-
-.Game_Selection  {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 20px;
-
-}
-#gameSelect{
-    font-size: 20px;
-}
-
-
-
-.team_select {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 20px;
-}
-
-#teamSelect {
-    font-size: 20px;
-}
-
-.auto_score {
-    text-align: center; /* centers everything inside */
-    margin-top: 60px;
-    font-size: 20px;
-}    
-.auto_score{
-    justify-content: space-around;
-    font-size: 20px;
-}
-.auto-score-title {
-    font-size: 100px; /* change this number to make it bigger or smaller */
-    margin-bottom: 10px; /* optional, space between text and buttons */
-}
-
-.auto_miss{
-    text-align: center;
-    margin-top: 20px;
-    font-size: 20px;
-}
-
-
-.auto_climb{
-    text-align: center;
-    margin-top: 40px;
-}
-
-    #Auto_Climb{
-        font-size: 20px;
+    /* Center both logos */
+    .top-right-logo,
+    .top-left-logo {
+    position: relative;
+    display: block;
+    margin: 10px auto;
+    width: 180px;
     }
-
-
-
     
-.crossed-the-line{
-    font-size: 20px;
-}
-
-.collection{
-     text-align: center;
-    margin-top: 20px;
-
-}
-input[type="checkbox"] {
-    transform: scale(1.5); /* 1.5x bigger; increase number for larger */
-    margin-right: 10px;    /* space between box and text */
-}
-
-/* Make the label text bigger */
-label[for="collect"] {
-    font-size: 20px; /* adjust as needed */
-}
-
-
-
-.tele_delivery {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 20px;
-}
-.tele_miss {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 20px;
-}
-
-.tele_score {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 20px;
-}
-
-.obstacle_passed {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 20px;
-}
-
-.obstacle_passed input[type="checkbox"] {
-    transform: scale(1.5); /* makes the checkboxes bigger */
-    margin: 0 10px 0 20px; /* spacing between checkbox and text */
-}
-
-.obstacle_passed label {
-    font-size: 20px; /* bigger text */
-    margin-right: 20px; /* space between checkboxes */
-}
-
-#Climb {
-    font-size: 20px;
-}
-
-#Climb_Direction {
-    font-size: 20px;
-}
-/* Disable double-tap zoom on all buttons and interactive elements */
-button, 
-select, 
-input, 
-.counter-display {
+    /* General center helper */
+    .center-block{
+    text-align:center;
+    margin-top:20px;
+    }
+    
+    /* App header */
+    .APP_header{
+    text-align:center;
+    font-size:80px;
+    margin-top:20px;
+    }
+    
+    /* Section titles (Autonomous / TeleOp / Endgame) */
+    .section-title{
+    text-align:center;
+    font-size:100px;
+    margin-top:60px;
+    margin-bottom:40px;
+    }
+    
+    /* Buttons */
+    button{
+    font-size:40px;
+    padding:20px 30px;
+    margin:10px;
+    user-select:none;
+    -webkit-user-select:none;
+    touch-action:manipulation;
+    }
+    
+    /* Dropdowns */
+    select{
+    font-size:40px;
+    padding:10px;
+    }
+    
+    /* Inputs */
+    input[type="text"]{
+    font-size:40px;
+    padding:10px;
+    width:80%;
+    }
+    
+    /* Checkboxes bigger */
+    input[type="checkbox"]{
+    transform:scale(2);
+    margin-right:15px;
+    }
+    
+    /* Labels */
+    label{
+    font-size:40px;
+    }
+    
+    /* Main blocks spacing */
+    .member_select,
+    .Game_Selection,
+    .team_select,
+    .startPoint,
+    .crossed-the-line,
+    .auto_score,
+    .auto_miss,
+    .auto_climb,
+    .collection,
+    .tele_delivery,
+    .tele_score,
+    .tele_miss,
+    .obstacle_passed,
+    .climb,
+    .climb_direction,
+    .WorkAuto,
+    .RobotFailed,
+    .scroringspeed,
+    .typeInBox {
+    text-align:center;
+    margin-top:40px;
+    }
+    
+    /* Obstacle checkboxes spacing */
+    .obstacle_passed label{
+    margin-right:30px;
+    }
+    
+    /* Sync status */
+    #syncStatus{
+    text-align:center;
+    margin-top:30px;
+    color:white;
+    font-weight:bold;
+    font-size:40px;
+    }
+    
+    /* Pending counter */
+    #pendingCount{
+    font-size:50px;
+    }
+    
+    /* Prevent zoom on mobile */
+    button, select, input {
     touch-action: manipulation;
-}
-
-/* Optional: Prevent text selection when tapping buttons fast */
-button {
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-
-
-
-
-
+    }
+    
+    /* Submit button special */
+    #finalSubmitBtn{
+    background:black;
+    color:white;
+    border-radius:15px;
+    border:none;
+    padding:30px 50px;
+    }
+    
+    /* Comment box */
+    #userInput{
+    margin-top:20px;
+    border-radius:10px;
+    border:none;
+    }
+    
+    /* Paragraphs */
+    p{
+    font-size:40px;
+    }
+    
+    /* Headings */
+    h2{
+    font-size:50px;
+    }
+    

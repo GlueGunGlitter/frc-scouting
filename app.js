@@ -159,8 +159,8 @@ function resetForm() {
 }
 // ================= CONFIG =================
 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbylhXxTUWTUhqo1ttSM2dzOoqihT2bPtTKHkAUAtni1TEZo4Lo7Mduqu3ugPA1Q3QDVsA/exec';
-let isSyncing = false;
+// const scriptURL = 'https://script.google.com/macros/s/AKfycbylhXxTUWTUhqo1ttSM2dzOoqihT2bPtTKHkAUAtni1TEZo4Lo7Mduqu3ugPA1Q3QDVsA/exec';
+// let isSyncing = false;
 
 // ================= PAGE LOAD =================
 

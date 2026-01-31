@@ -8,7 +8,7 @@ body {
 .top-right-logo {
     position: absolute;
     top: 20px;
-    right: 20px;
+    right: 750px;
     width: 160px;      /* change size here */
     height: auto;    /* keeps aspect ratio */
 }
@@ -16,7 +16,7 @@ body {
 .top-left-logo {
     position: absolute;
     top: 0px;
-    left: 20px;
+    left: 750px;
     width: 160px;      /* change size here */
     height: auto;    /* keeps aspect ratio */
 }

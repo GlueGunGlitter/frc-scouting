@@ -191,6 +191,51 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     });
 
+
+// ===== LOAD SHEET DATA =====
+document.addEventListener("DOMContentLoaded", loadSheetData);
+
+async function loadSheetData() {
+  try {
+    const res = await fetch(scriptURL);
+    const data = await res.json();
+
+    renderTable(data);
+  } catch (err) {
+    console.error("Failed to load sheet:", err);
+  }
+}
+
+// ===== DISPLAY AS TABLE =====
+function renderTable(rows) {
+  if (!rows || rows.length === 0) {
+    document.getElementById("sheetData").innerText = "No data yet.";
+    return;
+  }
+
+  const headers = Object.keys(rows[0]);
+
+  let html = `<table border="1" style="width:100%; background:white; color:black;">`;
+
+  // Header row
+  html += "<tr>";
+  headers.forEach(h => html += `<th>${h}</th>`);
+  html += "</tr>";
+
+  // Data rows
+  rows.forEach(r => {
+    html += "<tr>";
+    headers.forEach(h => html += `<td>${r[h]}</td>`);
+    html += "</tr>";
+  });
+
+  html += "</table>";
+
+  document.getElementById("sheetData").innerHTML = html;
+}
+
+
+
     // ---- COUNTERS ----
     const counters = [
         { add: "addPointBtn", sub: "removePointBtn", disp: "score" },
@@ -278,6 +323,50 @@ function submitToSheet() {
     if (navigator.onLine) autoSync();
 }
 
+
+// ===== LOAD SHEET DATA =====
+document.addEventListener("DOMContentLoaded", loadSheetData);
+
+async function loadSheetData() {
+  try {
+    const res = await fetch(scriptURL);
+    const data = await res.json();
+
+    renderTable(data);
+  } catch (err) {
+    console.error("Failed to load sheet:", err);
+  }
+}
+
+// ===== DISPLAY AS TABLE =====
+function renderTable(rows) {
+  if (!rows || rows.length === 0) {
+    document.getElementById("sheetData").innerText = "No data yet.";
+    return;
+  }
+
+  const headers = Object.keys(rows[0]);
+
+  let html = `<table border="1" style="width:100%; background:white; color:black;">`;
+
+  // Header row
+  html += "<tr>";
+  headers.forEach(h => html += `<th>${h}</th>`);
+  html += "</tr>";
+
+  // Data rows
+  rows.forEach(r => {
+    html += "<tr>";
+    headers.forEach(h => html += `<td>${r[h]}</td>`);
+    html += "</tr>";
+  });
+
+  html += "</table>";
+
+  document.getElementById("sheetData").innerHTML = html;
+}
+
+
 // ================= SYNC =================
 
 async function autoSync() {
@@ -299,6 +388,21 @@ async function autoSync() {
     isSyncing = false;
     updatePendingUI();
 }
+
+function showScouting() {
+    document.getElementById("scoutingPage").style.display = "block";
+    document.getElementById("dataPage").style.display = "none";
+  }
+  
+  function showData() {
+    document.getElementById("scoutingPage").style.display = "none";
+    document.getElementById("dataPage").style.display = "block";
+  
+    // reload sheet every time you open data page
+    loadSheetData();
+  }
+  
+
 
 // ================= HELPERS =================
 

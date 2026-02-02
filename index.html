@@ -3,27 +3,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FRC Scputing App</title>
+    <title>FRC Scouting App</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="/logo.png">
+
     <!-- Link to the manifest you just created -->
 <link rel="manifest" href="manifest.json">
-
-
 
 <!-- iOS specific tag to make it work on iPhones -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="icon-192.png">
 
+<div style="text-align:center;margin-bottom:20px;">
+    <button onclick="showScouting()">Scouting</button>
+    <button onclick="showData()">View Data</button>
+  </div>
+  
+
 </head>
 <body>
-    <img src="logo.png" alt="Team Logo" class="top-right-logo">
-    <img src="shvilim.png" alt="School" class="top-left-logo">
 
-    <div id="sheetData"></div>
 
 
     <h1 class=FRC-Scouting-App> 
 <h1 class="APP_header">FRC Scouting App</h1>
+
+
+<div id="scoutingPage">
 
    <div class="member_select counter">
     <h2>Select Name</h2>
@@ -32,12 +38,15 @@
     </select>
 </div>
 
+
 <div class="Game_Selection">
 <h2>Select Game Number</h2>
 <select id="gameSelect">
     <option value="">Select Game</option>
 </select>
 </div>
+
+<div id="scoutingPage" style="display:none;">
 
 
     </div>
@@ -207,8 +216,19 @@
 </div>
 
 
+</div>
+
+<div id="dataPage" style="display:none;">
+  <h2 style="text-align:center;color:white;">Scouting Data</h2>
+  <div id="sheetData"></div>
+</div>
+
     
 
+
+    
+
+    <!-- Load JS once at the end -->
     
     
 </body>

@@ -3,8 +3,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FRC Scputing App</title>
+    <title>FRC Scouting App</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="/logo.png">
+
     <!-- Link to the manifest you just created -->
 <link rel="manifest" href="manifest.json">
 
@@ -12,15 +14,22 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="icon-192.png">
 
+<div style="text-align:center;margin-bottom:20px;">
+    <button onclick="showScouting()">Scouting</button>
+    <button onclick="showData()">View Data</button>
+  </div>
+  
+
 </head>
 <body>
-    <img src="logo.png" alt="Team Logo" class="top-right-logo">
-    <img src="shvilim.png" alt="School" class="top-left-logo">
 
 
 
     <h1 class=FRC-Scouting-App> 
 <h1 class="APP_header">FRC Scouting App</h1>
+
+
+<div id="scoutingPage">
 
    <div class="member_select counter">
     <h2>Select Name</h2>
@@ -29,12 +38,15 @@
     </select>
 </div>
 
+
 <div class="Game_Selection">
 <h2>Select Game Number</h2>
 <select id="gameSelect">
     <option value="">Select Game</option>
 </select>
 </div>
+
+<div id="scoutingPage" style="display:none;">
 
 
     </div>
@@ -64,16 +76,26 @@
     <!-- Auto Score Counter -->
     <div class="auto_score">    
         <h2>Times Scored</h2>
-        <button id="addPointBtn">Add Point</button>
-        <button id="removePointBtn">Remove Point</button>
+        <button id="addPointBtn10">+10</button>
+        <button id="addPointBtn5">+5</button>
+        <button id="addPointBtn">+1</button>
+        
+        <button id="removePointBtn">-1</button>
+        <button id="removePointBtn5">-5</button>
+        <button id="removePointBtn10">-10</button>
         <p>Score: <span id="score">0</span></p>
     </div>
 
     <!-- Times Missed Counter -->
     <div class="auto_miss">    
         <h2>Times Missed</h2>
-        <button id="addMissBtn">Add Miss</button>
-        <button id="removeMissBtn">Remove Miss</button>
+     <button id="addMissBtn10">+10</button>
+        <button id="addMissBtn5">+5</button>
+        <button id="addMissBtn">+1</button>
+        
+        <button id="removeMissBtn">-1</button>
+        <button id="removeMissBtn5">-5</button>
+        <button id="removeMissBtn10">-10</button>
         <p>Misses: <span id="missCount">0</span></p>
     </div>
 
@@ -108,16 +130,26 @@
   <!-- TeleOp Score Counter -->
 <div class="tele_score">    
     <h2>Times Scored</h2>
-    <button id="teleAddPointBtn">Add Point</button>
-    <button id="teleRemovePointBtn">Remove Point</button>
+  <button id="teleAddPointBtn10">+10</button>
+    <button id="teleAddPointBtn5">+5</button>
+    <button id="teleAddPointBtn">+1</button>
+    
+    <button id="teleRemovePointBtn">-1</button>
+    <button id="teleRemovePointBtn5">-5</button>
+    <button id="teleRemovePointBtn10">-10</button>
     <p>Score: <span id="teleScore">0</span></p>
 </div>
 
 <!-- TeleOp Miss Counter -->
 <div class="tele_miss">    
     <h2>Times Missed</h2>
-    <button id="teleAddMissBtn">Add Miss</button>
-    <button id="teleRemoveMissBtn">Remove Miss</button>
+<button id="teleAddMissBtn10">+10</button>
+<button id="teleAddMissBtn5">+5</button>
+<button id="teleAddMissBtn">+1</button>
+
+<button id="teleRemoveMissBtn">-1</button>
+<button id="teleRemoveMissBtn5">-5</button>
+<button id="teleRemoveMissBtn10">-10</button>
     <p>Misses: <span id="teleMissCount">0</span></p>
 </div>
 
@@ -203,6 +235,13 @@
     <p id="statusMsg"></p>
 </div>
 
+
+</div>
+
+<div id="dataPage" style="display:none;">
+  <h2 style="text-align:center;color:white;">Scouting Data</h2>
+  <div id="sheetData"></div>
+</div>
 
     
 

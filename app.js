@@ -217,6 +217,8 @@ function analyzeTeams(rows) {
       FailPct: pct(matches, m => m.RobotFailed === "Yes")
     });
   }
+  results.sort((a,b) => b.AvgTotal - a.AvgTotal);
+
 
   return results;
 }

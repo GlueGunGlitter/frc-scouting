@@ -1,249 +1,102 @@
 // ================= CONFIG =================
-
 const scriptURL = 'https://script.google.com/macros/s/AKfycby0Cg2ZO1qlLRCid3MdYhaP4Kn5Zk35MjIGGCtOX9RqJtReaSpbq9y8aACuHklW5jVfmg/exec';
 let isSyncing = false;
 
 // ================= PAGE LOAD =================
-
 document.addEventListener('DOMContentLoaded', () => {
+  loadSheetData();
+  loadSelectFiles();
+  setupCounters();
+  updatePendingUI();
 
-    // ---- LOAD SHEET DATA ----
-    loadSheetData();
-
-    // ---- LOAD TXT FILES ----
-    const loaders = [
-        { file: 'members.txt', id: 'memberSelect' },
-        { file: 'games.txt', id: 'gameSelect' },
-        { file: 'teams.txt', id: 'teamSelect' }
-    ];
-
-    loaders.forEach(loader => {
-        fetch(loader.file)
-            .then(r => r.text())
-            .then(data => {
-                const el = document.getElementById(loader.id);
-                data.split('\n').forEach(v => {
-                    if (v.trim()) {
-                        const opt = document.createElement("option");
-                        opt.value = opt.textContent = v.trim();
-                        el.appendChild(opt);
-                    }
-                });
-            });
-    });
-
-    // ---- COUNTERS ----
-    const counters = [
-        { add: "addPointBtn", sub: "removePointBtn", disp: "score" },
-        { add: "addMissBtn", sub: "removeMissBtn", disp: "missCount" },
-        { add: "teleAddDeliveryBtn", sub: "teleRemoveDeliveryBtn", disp: "teleDeliveryCount" },
-        { add: "teleAddPointBtn", sub: "teleRemovePointBtn", disp: "teleScore" },
-        { add: "teleAddMissBtn", sub: "teleRemoveMissBtn", disp: "teleMissCount" }
-    ];
-
-    counters.forEach(c => {
-        const a = document.getElementById(c.add);
-        const s = document.getElementById(c.sub);
-        const d = document.getElementById(c.disp);
-
-      if (a && s && d) {
-
-    // +1
-    a.onclick = () => d.innerText = +d.innerText + 1;
-
-    // -1
-    s.onclick = () => d.innerText = Math.max(0, +d.innerText - 1);
-
-    // +5
-    const add5 = document.getElementById(c.add + "5");
-    if (add5) add5.onclick = () => d.innerText = +d.innerText + 5;
-
-    // -5
-    const sub5 = document.getElementById(c.sub + "5");
-    if (sub5) sub5.onclick = () => d.innerText = Math.max(0, +d.innerText - 5);
-
-    // +10
-    const add10 = document.getElementById(c.add + "10");
-    if (add10) add10.onclick = () => d.innerText = +d.innerText + 10;
-
-    // -10
-    const sub10 = document.getElementById(c.sub + "10");
-    if (sub10) sub10.onclick = () => d.innerText = Math.max(0, +d.innerText - 10);
-}
-
-    });
-
-    updatePendingUI();
-    window.addEventListener('online', autoSync);
-    setInterval(autoSync, 10000);
+  window.addEventListener('online', autoSync);
+  setInterval(autoSync, 10000);
 });
 
-// ================= READ SHEET =================
+// ================= LOAD DROPDOWNS =================
+function loadSelectFiles() {
+  const loaders = [
+    { file: 'members.txt', id: 'memberSelect' },
+    { file: 'games.txt', id: 'gameSelect' },
+    { file: 'teams.txt', id: 'teamSelect' }
+  ];
 
-async function loadSheetData() {
-    const res = await fetch(scriptURL);
-    const rows = await res.json();
-    displaySheet(rows);
+  loaders.forEach(({ file, id }) => {
+    fetch(file)
+      .then(r => r.text())
+      .then(text => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        text.split('\n').forEach(v => {
+          if (v.trim()) {
+            const opt = document.createElement("option");
+            opt.value = opt.textContent = v.trim();
+            el.appendChild(opt);
+          }
+        });
+      });
+  });
 }
 
-function displaySheet(rows) {
-    const div = document.getElementById("sheetData");
-    if (!div) return;
+// ================= COUNTERS =================
+function setupCounters() {
+  const counters = [
+    { add: "addPointBtn", sub: "removePointBtn", disp: "score" },
+    { add: "addMissBtn", sub: "removeMissBtn", disp: "missCount" },
+    { add: "teleAddDeliveryBtn", sub: "teleRemoveDeliveryBtn", disp: "teleDeliveryCount" },
+    { add: "teleAddPointBtn", sub: "teleRemovePointBtn", disp: "teleScore" },
+    { add: "teleAddMissBtn", sub: "teleRemoveMissBtn", disp: "teleMissCount" }
+  ];
 
-    div.innerHTML = "<h2>Scouting Data</h2>";
+  counters.forEach(c => {
+    const d = document.getElementById(c.disp);
+    if (!d) return;
 
-    rows.forEach(r => {
-        div.innerHTML += `
-        <div style="border:1px solid white;padding:6px;margin:6px">
-            Match: ${r.GameNum}<br>
-            Team: ${r.TeamNum}<br>
-            Auto: ${r.AutoScore}<br>
-            Tele: ${r.TeleScore}
-        </div>`;
-    });
-}
-
-// ================= SUBMIT =================
-
-function submitToSheet() {
-    const matchData = {
-        Scouter: memberSelect.value,
-        GameNum: gameSelect.value,
-        TeamNum: teamSelect.value,
-        StartPos: startingPoint.value,
-        AutoCross: autoCross.checked ? "Yes" : "No",
-        AutoScore: score.innerText,
-        AutoMiss: missCount.innerText,
-        AutoClimb: Auto_Climb.value,
-        AutoCollect: collect.checked ? "Yes" : "No",
-        TeleDeliveries: teleDeliveryCount.innerText,
-        TeleScore: teleScore.innerText,
-        TeleMiss: teleMissCount.innerText,
-        ObstacleA: obstacleA.checked ? "Yes" : "No",
-        ObstacleB: obstacleB.checked ? "Yes" : "No",
-        EndClimb: Climb.value,
-        EndClimbDir: Climb_Direction.value,
-        AutoWorked: autoWorked.checked ? "Yes" : "No",
-        RobotFailed: robotFailed.checked ? "Yes" : "No",
-        ScoringSpeed: ScoringSpeed.value,
-        Comments: userInput.value,
-        id: Date.now()
+    const bind = (id, delta) => {
+      const btn = document.getElementById(id);
+      if (btn) btn.onclick = () => {
+        d.innerText = Math.max(0, Number(d.innerText) + delta);
+      };
     };
 
-    let queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
-    queue.push(matchData);
-    localStorage.setItem('scoutingQueue', JSON.stringify(queue));
-
-    resetForm();
-    updatePendingUI();
-
-    if (navigator.onLine) autoSync();
+    bind(c.add, 1);
+    bind(c.sub, -1);
+    bind(c.add + "5", 5);
+    bind(c.sub + "5", -5);
+    bind(c.add + "10", 10);
+    bind(c.sub + "10", -10);
+  });
 }
 
-// ================= SYNC =================
-
-async function autoSync() {
-    if (!navigator.onLine || isSyncing) return;
-
-    let queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
-    if (!queue.length) return;
-
-    isSyncing = true;
-    syncText.innerText = "Syncing...";
-
-    for (const match of queue) {
-        const form = new URLSearchParams(match);
-        await fetch(scriptURL, {
-            method: 'POST',
-            body: formData
-          });
-          
-    }
-
-    localStorage.removeItem('scoutingQueue');
-    syncText.innerText = "All Synced";
-    isSyncing = false;
-    updatePendingUI();
-}
-
-// ================= HELPERS =================
-
-function updatePendingUI() {
-    const q = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
-    pendingCount.innerText = q.length;
-}
-
-function resetForm() {
-    document.querySelectorAll('[id$="score"], [id$="Count"]').forEach(e => e.innerText = "0");
-    document.querySelectorAll('input[type="checkbox"]').forEach(e => e.checked = false);
-    userInput.value = "";
-}
-// ================= CONFIG =================
-
-// const scriptURL = 'https://script.google.com/macros/s/AKfycbylhXxTUWTUhqo1ttSM2dzOoqihT2bPtTKHkAUAtni1TEZo4Lo7Mduqu3ugPA1Q3QDVsA/exec';
-// let isSyncing = false;
-
-// ================= PAGE LOAD =================
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    // ---- LOAD SHEET DATA ----
-    loadSheetData();
-
-    // ---- LOAD TXT FILES ----
-    const loaders = [
-        { file: 'members.txt', id: 'memberSelect' },
-        { file: 'games.txt', id: 'gameSelect' },
-        { file: 'teams.txt', id: 'teamSelect' }
-    ];
-
-    loaders.forEach(loader => {
-        fetch(loader.file)
-            .then(r => r.text())
-            .then(data => {
-                const el = document.getElementById(loader.id);
-                data.split('\n').forEach(v => {
-                    if (v.trim()) {
-                        const opt = document.createElement("option");
-                        opt.value = opt.textContent = v.trim();
-                        el.appendChild(opt);
-                    }
-                });
-            });
-    });
-
-
-// ===== LOAD SHEET DATA =====
-document.addEventListener("DOMContentLoaded", loadSheetData);
-
+// ================= READ SHEET =================
 async function loadSheetData() {
   try {
     const res = await fetch(scriptURL);
-    const data = await res.json();
-
-    renderTable(data);
+    const rows = await res.json();
+    renderTable(analyzeTeams(rows));
   } catch (err) {
     console.error("Failed to load sheet:", err);
   }
 }
 
-// ===== DISPLAY AS TABLE =====
+// ================= DISPLAY TABLE =================
 function renderTable(rows) {
+  const div = document.getElementById("sheetData");
+  if (!div) return;
+
   if (!rows || rows.length === 0) {
-    document.getElementById("sheetData").innerText = "No data yet.";
+    div.innerText = "No data yet.";
     return;
   }
 
   const headers = Object.keys(rows[0]);
-
   let html = `<table border="1" style="width:100%; background:white; color:black;">`;
 
-  // Header row
   html += "<tr>";
   headers.forEach(h => html += `<th>${h}</th>`);
   html += "</tr>";
 
-  // Data rows
   rows.forEach(r => {
     html += "<tr>";
     headers.forEach(h => html += `<td>${r[h]}</td>`);
@@ -251,189 +104,140 @@ function renderTable(rows) {
   });
 
   html += "</table>";
-
-  document.getElementById("sheetData").innerHTML = html;
-}
-
-
-
-    // ---- COUNTERS ----
-    const counters = [
-        { add: "addPointBtn", sub: "removePointBtn", disp: "score" },
-        { add: "addMissBtn", sub: "removeMissBtn", disp: "missCount" },
-        { add: "teleAddDeliveryBtn", sub: "teleRemoveDeliveryBtn", disp: "teleDeliveryCount" },
-        { add: "teleAddPointBtn", sub: "teleRemovePointBtn", disp: "teleScore" },
-        { add: "teleAddMissBtn", sub: "teleRemoveMissBtn", disp: "teleMissCount" }
-    ];
-
-    counters.forEach(c => {
-        const a = document.getElementById(c.add);
-        const s = document.getElementById(c.sub);
-        const d = document.getElementById(c.disp);
-
-        if (a && s && d) {
-            a.onclick = () => d.innerText = +d.innerText + 1;
-            s.onclick = () => d.innerText = Math.max(0, +d.innerText - 1);
-        }
-    });
-
-    updatePendingUI();
-    window.addEventListener('online', autoSync);
-    setInterval(autoSync, 10000);
-});
-
-// ================= READ SHEET =================
-
-async function loadSheetData() {
-    const res = await fetch(scriptURL);
-    const rows = await res.json();
-    displaySheet(rows);
-}
-
-function displaySheet(rows) {
-    const div = document.getElementById("sheetData");
-    if (!div) return;
-
-    div.innerHTML = "<h2>Scouting Data</h2>";
-
-    rows.forEach(r => {
-        div.innerHTML += `
-        <div style="border:1px solid white;padding:6px;margin:6px">
-            Match: ${r.GameNum}<br>
-            Team: ${r.TeamNum}<br>
-            Auto: ${r.AutoScore}<br>
-            Tele: ${r.TeleScore}
-        </div>`;
-    });
+  div.innerHTML = html;
 }
 
 // ================= SUBMIT =================
-
 function submitToSheet() {
-    const matchData = {
-        Scouter: memberSelect.value,
-        GameNum: gameSelect.value,
-        TeamNum: teamSelect.value,
-        StartPos: startingPoint.value,
-        AutoCross: autoCross.checked ? "Yes" : "No",
-        AutoScore: score.innerText,
-        AutoMiss: missCount.innerText,
-        AutoClimb: Auto_Climb.value,
-        AutoCollect: collect.checked ? "Yes" : "No",
-        TeleDeliveries: teleDeliveryCount.innerText,
-        TeleScore: teleScore.innerText,
-        TeleMiss: teleMissCount.innerText,
-        ObstacleA: obstacleA.checked ? "Yes" : "No",
-        ObstacleB: obstacleB.checked ? "Yes" : "No",
-        EndClimb: Climb.value,
-        EndClimbDir: Climb_Direction.value,
-        AutoWorked: autoWorked.checked ? "Yes" : "No",
-        RobotFailed: robotFailed.checked ? "Yes" : "No",
-        ScoringSpeed: ScoringSpeed.value,
-        Comments: userInput.value,
-        id: Date.now()
-    };
+  const matchData = {
+    Scouter: memberSelect.value,
+    GameNum: gameSelect.value,
+    TeamNum: teamSelect.value,
+    StartPos: startingPoint.value,
+    AutoCross: autoCross.checked ? "Yes" : "No",
+    AutoScore: score.innerText,
+    AutoMiss: missCount.innerText,
+    AutoClimb: Auto_Climb.value,
+    AutoCollect: collect.checked ? "Yes" : "No",
+    TeleDeliveries: teleDeliveryCount.innerText,
+    TeleScore: teleScore.innerText,
+    TeleMiss: teleMissCount.innerText,
+    ObstacleA: obstacleA.checked ? "Yes" : "No",
+    ObstacleB: obstacleB.checked ? "Yes" : "No",
+    EndClimb: Climb.value,
+    EndClimbDir: Climb_Direction.value,
+    AutoWorked: autoWorked.checked ? "Yes" : "No",
+    RobotFailed: robotFailed.checked ? "Yes" : "No",
+    ScoringSpeed: ScoringSpeed.value,
+    Comments: userInput.value,
+    id: Date.now()
+  };
 
-    let queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
-    queue.push(matchData);
-    localStorage.setItem('scoutingQueue', JSON.stringify(queue));
+  const queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
+  queue.push(matchData);
+  localStorage.setItem('scoutingQueue', JSON.stringify(queue));
 
-    resetForm();
-    updatePendingUI();
+  resetForm();
+  updatePendingUI();
 
-    if (navigator.onLine) autoSync();
+  if (navigator.onLine) autoSync();
 }
-
-
-// ===== LOAD SHEET DATA =====
-document.addEventListener("DOMContentLoaded", loadSheetData);
-
-async function loadSheetData() {
-  try {
-    const res = await fetch(scriptURL);
-    const data = await res.json();
-
-    renderTable(data);
-  } catch (err) {
-    console.error("Failed to load sheet:", err);
-  }
-}
-
-// ===== DISPLAY AS TABLE =====
-function renderTable(rows) {
-  if (!rows || rows.length === 0) {
-    document.getElementById("sheetData").innerText = "No data yet.";
-    return;
-  }
-
-  const headers = Object.keys(rows[0]);
-
-  let html = `<table border="1" style="width:100%; background:white; color:black;">`;
-
-  // Header row
-  html += "<tr>";
-  headers.forEach(h => html += `<th>${h}</th>`);
-  html += "</tr>";
-
-  // Data rows
-  rows.forEach(r => {
-    html += "<tr>";
-    headers.forEach(h => html += `<td>${r[h]}</td>`);
-    html += "</tr>";
-  });
-
-  html += "</table>";
-
-  document.getElementById("sheetData").innerHTML = html;
-}
-
 
 // ================= SYNC =================
-
 async function autoSync() {
-    if (!navigator.onLine || isSyncing) return;
+  if (!navigator.onLine || isSyncing) return;
 
-    let queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
-    if (!queue.length) return;
+  const queue = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
+  if (!queue.length) return;
 
-    isSyncing = true;
-    syncText.innerText = "Syncing...";
+  isSyncing = true;
+  syncText.innerText = "Syncing...";
 
-    for (const match of queue) {
-        const form = new URLSearchParams(match);
-        await fetch(scriptURL, { method: "POST", body: form, mode: "no-cors" });
-    }
+  for (const match of queue) {
+    const form = new URLSearchParams(match);
+    await fetch(scriptURL, {
+      method: "POST",
+      body: form,
+      mode: "no-cors"
+    });
+  }
 
-    localStorage.removeItem('scoutingQueue');
-    syncText.innerText = "All Synced";
-    isSyncing = false;
-    updatePendingUI();
+  localStorage.removeItem('scoutingQueue');
+  syncText.innerText = "All Synced";
+  isSyncing = false;
+  updatePendingUI();
 }
 
+// ================= PAGE TOGGLES =================
 function showScouting() {
-    document.getElementById("scoutingPage").style.display = "block";
-    document.getElementById("dataPage").style.display = "none";
+  document.getElementById("scoutingPage").style.display = "block";
+  document.getElementById("dataPage").style.display = "none";
+}
+
+function showData() {
+  document.getElementById("scoutingPage").style.display = "none";
+  document.getElementById("dataPage").style.display = "block";
+  loadSheetData();
+}
+
+// ================= ANALYSIS =================
+function groupByTeam(rows) {
+  const teams = {};
+
+  rows.forEach(row => {
+    const team = row.TeamNum;
+    if (!team) return;
+
+    if (!teams[team]) teams[team] = [];
+    teams[team].push(row);
+  });
+
+  return teams;
+}
+
+function analyzeTeams(rows) {
+  const teams = groupByTeam(rows);
+  const results = [];
+
+  for (const team in teams) {
+    const matches = teams[team];
+
+    const autoScores = matches.map(m => Number(m.AutoScore) || 0);
+    const teleScores = matches.map(m => Number(m.TeleScore) || 0);
+    const teleMisses = matches.map(m => Number(m.TeleMiss) || 0);
+
+    results.push({
+      Team: team,
+      Matches: matches.length,
+      AvgAuto: avg(autoScores),
+      AvgTele: avg(teleScores),
+      AvgTotal: avg(autoScores.map((a,i)=>a + teleScores[i])),
+      AvgTeleMiss: avg(teleMisses),
+      AutoWorkedPct: pct(matches, m => m.AutoWorked === "Yes"),
+      FailPct: pct(matches, m => m.RobotFailed === "Yes")
+    });
   }
-  
-  function showData() {
-    document.getElementById("scoutingPage").style.display = "none";
-    document.getElementById("dataPage").style.display = "block";
-  
-    // reload sheet every time you open data page
-    loadSheetData();
-  }
-  
+
+  return results;
+}
+
+function avg(arr) {
+  return arr.length ? (arr.reduce((a,b)=>a+b,0) / arr.length).toFixed(2) : 0;
+}
+
+function pct(arr, fn) {
+  return arr.length ? ((arr.filter(fn).length / arr.length) * 100).toFixed(1) : 0;
+}
 
 
 // ================= HELPERS =================
-
 function updatePendingUI() {
-    const q = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
-    pendingCount.innerText = q.length;
+  const q = JSON.parse(localStorage.getItem('scoutingQueue') || "[]");
+  pendingCount.innerText = q.length;
 }
 
 function resetForm() {
-    document.querySelectorAll('[id$="score"], [id$="Count"]').forEach(e => e.innerText = "0");
-    document.querySelectorAll('input[type="checkbox"]').forEach(e => e.checked = false);
-    userInput.value = "";
+  document.querySelectorAll('[id$="score"], [id$="Count"]').forEach(e => e.innerText = "0");
+  document.querySelectorAll('input[type="checkbox"]').forEach(e => e.checked = false);
+  userInput.value = "";
 }

@@ -75,6 +75,13 @@ async function loadSheetData() {
     const res = await fetch(scriptURL);
     const rows = await res.json();
     renderTable(analyzeTeams(rows));
+    const analyzed = analyzeTeams(rows);
+
+renderTable(analyzed);            // your existing table
+renderAvgTotalChart(analyzed);    // <-- new chart
+renderRankingLadder(analyzed);    // optional ranking ladder
+
+    
   } catch (err) {
     console.error("Failed to load sheet:", err);
   }
@@ -180,6 +187,29 @@ function showData() {
   loadSheetData();
 }
 
+// ======== MAPPINGS FOR CATEGORICAL FIELDS ========
+const mappings = {
+  ScoringSpeed: { A: "Slow", B: "Medium", C: "Fast", D: "Very Fast" },
+  Auto_Climb: { A: "Didn't try", B: "Failed", C: "Climbed" },
+  Climb: { A: "Didn't try", B: "Failed", C: "Level 1", D: "Level 2", E: "Level 3" },
+  Climb_Direction: { A: "Center", B: "Left", C: "Right" }
+};
+
+// ======== HELPER TO FIND MOST COMMON VALUE ========
+function mostCommon(arr) {
+  if (!arr.length) return "";
+  const counts = {};
+  arr.forEach(v => counts[v] = (counts[v] || 0) + 1);
+  let max = 0, common = "";
+  for (const key in counts) {
+    if (counts[key] > max) {
+      max = counts[key];
+      common = key;
+    }
+  }
+  return common;
+}
+
 // ================= ANALYSIS =================
 function groupByTeam(rows) {
   const teams = {};
@@ -206,6 +236,12 @@ function analyzeTeams(rows) {
     const teleScores = matches.map(m => Number(m.TeleScore) || 0);
     const teleMisses = matches.map(m => Number(m.TeleMiss) || 0);
 
+    // Categorical fields
+    const scoringSpeeds = matches.map(m => m.ScoringSpeed);
+    const autoClimbs = matches.map(m => m.Auto_Climb);
+    const endClimbs = matches.map(m => m.Climb);
+    const climbDirs = matches.map(m => m.Climb_Direction);
+
     results.push({
       Team: team,
       Matches: matches.length,
@@ -214,14 +250,83 @@ function analyzeTeams(rows) {
       AvgTotal: avg(autoScores.map((a,i)=>a + teleScores[i])),
       AvgTeleMiss: avg(teleMisses),
       AutoWorkedPct: pct(matches, m => m.AutoWorked === "Yes"),
-      FailPct: pct(matches, m => m.RobotFailed === "Yes")
+      FailPct: pct(matches, m => m.RobotFailed === "Yes"),
+      ScoringSpeed: mappings.ScoringSpeed[mostCommon(scoringSpeeds)] || "",
+      AutoClimb: mappings.Auto_Climb[mostCommon(autoClimbs)] || "",
+      EndClimb: mappings.Climb[mostCommon(endClimbs)] || "",
+      ClimbDir: mappings.Climb_Direction[mostCommon(climbDirs)] || "",
+      Comments: matches.map(m => m.Comments).filter(c => c).join("; ")
     });
   }
+
   results.sort((a,b) => b.AvgTotal - a.AvgTotal);
-
-
   return results;
 }
+function renderAvgTotalChart(teamData) {
+  const ctx = document.getElementById('avgTotalChart').getContext('2d');
+
+  const sortedTeams = [...teamData].sort((a,b) => b.AvgTotal - a.AvgTotal);
+
+  const labels = sortedTeams.map(t => t.Team);
+  const data = sortedTeams.map(t => t.AvgTotal);
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Avg Total Score',
+        data: data,
+        backgroundColor: 'rgba(52, 152, 219, 0.7)', // change bar color here
+        borderColor: 'rgba(41, 128, 185, 1)',       // border color
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { display: false },
+        tooltip: { 
+          backgroundColor: 'rgba(0,0,0,0.7)', 
+          titleColor: '#fff', 
+          bodyColor: '#fff'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: '#ffffff',   // y-axis numbers color
+            font: { size: 14 }
+          }
+        },
+        x: {
+          ticks: {
+            color: '#ffffff',   // team names color
+            font: { size: 14 }
+          }
+        }
+      }
+    }
+  });
+}
+
+
+
+// Helper to find the most common value in an array
+function mode(arr) {
+  const freq = {};
+  let maxCount = 0, modeVal = "";
+  arr.forEach(v => {
+    if (!v) return;
+    freq[v] = (freq[v] || 0) + 1;
+    if (freq[v] > maxCount) {
+      maxCount = freq[v];
+      modeVal = v;
+    }
+  });
+  return modeVal || "-";
+}
+
 
 function avg(arr) {
   return arr.length ? (arr.reduce((a,b)=>a+b,0) / arr.length).toFixed(2) : 0;

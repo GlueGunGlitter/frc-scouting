@@ -467,7 +467,7 @@ function drawPie(canvasId, title, scored, missed, saveRef, oldChart) {
           data: [scored, missed],
           backgroundColor: [
             "rgba(46, 204, 113, 0.8)",
-            "rgba(231, 76, 60, 0.8)",
+            "rgba(231, 60, 60, 0.8)",
           ],
         },
       ],

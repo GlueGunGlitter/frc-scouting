@@ -1,203 +1,193 @@
 body {
   font-family: "Times New Roman", Times, serif;
-    padding: 20px;
+  padding: 20px;
 
-
-    background-color: #e10096;
-    color: whitesmoke;
-.top-right-logo {
+  background-color: #e10096;
+  color: whitesmoke;
+  .top-right-logo {
     position: absolute;
     top: 20px;
     right: 650px;
-    width: 160px;      /* change size here */
-    height: auto;    /* keeps aspect ratio */
-}
+    width: 160px; /* change size here */
+    height: auto; /* keeps aspect ratio */
+  }
 
-.top-left-logo {
+  .top-left-logo {
     position: absolute;
     top: 0px;
     left: 650px;
-    width: 160px;      /* change size here */
-    height: auto;    /* keeps aspect ratio */
-}
+    width: 160px; /* change size here */
+    height: auto; /* keeps aspect ratio */
+  }
 
-.section-title {
+  .section-title {
     text-align: center;
     margin-top: 60px;
     margin-bottom: 30px;
     font-size: 50px;
-}
+  }
 
-.center-image {
-  display: block;
-  margin: 0 auto;
-}
+  .center-image {
+    display: block;
+    margin: 0 auto;
+  }
 
-
-    .startPoint{
+  .startPoint {
     justify-content: space-around;
-    }
+  }
 
-    #startingPoint{
-        font-size: 20px;
-    }
-    
-    .APP_header {
+  #startingPoint {
+    font-size: 20px;
+  }
+
+  .APP_header {
     text-align: center; /* centers the text horizontally */
-
-
-        
-}
-
+  }
 }
 
 button {
-    font-size: 20px;
-    padding: 10px 20px;
+  font-size: 20px;
+  padding: 10px 20px;
 }
 
 .member_select {
-    text-align: center;
-    margin-top: 80px;
-    font-size: 20px;
+  text-align: center;
+  margin-top: 80px;
+  font-size: 20px;
 }
 
 #memberSelect {
-    font-size: 20px;
+  font-size: 20px;
 }
 
-.Game_Selection  {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 20px;
-
+.Game_Selection {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 20px;
 }
-#gameSelect{
-    font-size: 20px;
+#gameSelect {
+  font-size: 20px;
 }
-
-
 
 .team_select {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 20px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 20px;
 }
 
 #teamSelect {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .auto_score {
-    text-align: center; /* centers everything inside */
-    margin-top: 60px;
-    font-size: 20px;
-}    
-.auto_score{
-    justify-content: space-around;
-    font-size: 20px;
+  text-align: center; /* centers everything inside */
+  margin-top: 60px;
+  font-size: 20px;
+}
+.auto_score {
+  justify-content: space-around;
+  font-size: 20px;
 }
 .auto-score-title {
-    font-size: 100px; /* change this number to make it bigger or smaller */
-    margin-bottom: 10px; /* optional, space between text and buttons */
+  font-size: 100px; /* change this number to make it bigger or smaller */
+  margin-bottom: 10px; /* optional, space between text and buttons */
 }
 
-.auto_miss{
-    text-align: center;
-    margin-top: 20px;
-    font-size: 20px;
+.auto_miss {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 20px;
 }
 
-
-.auto_climb{
-    text-align: center;
-    margin-top: 40px;
+.auto_climb {
+  text-align: center;
+  margin-top: 40px;
 }
 
-    #Auto_Climb{
-        font-size: 20px;
-    }
-
-
-
-    
-.crossed-the-line{
-    font-size: 20px;
+#Auto_Climb {
+  font-size: 20px;
 }
 
-.collection{
-     text-align: center;
-    margin-top: 20px;
+.crossed-the-line {
+  font-size: 20px;
+}
 
+.collection {
+  text-align: center;
+  margin-top: 20px;
 }
 input[type="checkbox"] {
-    transform: scale(1.5); /* 1.5x bigger; increase number for larger */
-    margin-right: 10px;    /* space between box and text */
+  transform: scale(1.5); /* 1.5x bigger; increase number for larger */
+  margin-right: 10px; /* space between box and text */
 }
 
 /* Make the label text bigger */
 label[for="collect"] {
-    font-size: 20px; /* adjust as needed */
+  font-size: 20px; /* adjust as needed */
 }
-
-
 
 .tele_delivery {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 20px;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 20px;
 }
 .tele_miss {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 20px;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 20px;
 }
 
 .tele_score {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 20px;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 20px;
 }
 
 .obstacle_passed {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 20px;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 20px;
 }
 
 .obstacle_passed input[type="checkbox"] {
-    transform: scale(1.5); /* makes the checkboxes bigger */
-    margin: 0 10px 0 20px; /* spacing between checkbox and text */
+  transform: scale(1.5); /* makes the checkboxes bigger */
+  margin: 0 10px 0 20px; /* spacing between checkbox and text */
 }
 
 .obstacle_passed label {
-    font-size: 20px; /* bigger text */
-    margin-right: 20px; /* space between checkboxes */
+  font-size: 20px; /* bigger text */
+  margin-right: 20px; /* space between checkboxes */
 }
 
 #Climb {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 #Climb_Direction {
-    font-size: 20px;
+  font-size: 20px;
 }
 /* Disable double-tap zoom on all buttons and interactive elements */
-button, 
-select, 
-input, 
+button,
+select,
+input,
 .counter-display {
-    touch-action: manipulation;
+  touch-action: manipulation;
 }
 
 /* Optional: Prevent text selection when tapping buttons fast */
 button {
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
+/* Pie chart size control */
+#pieCharts {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
 
-
-
-
-
+.pieBox {
+  width: 500px; /* 🔥 change this */
+  height: 500px; /* 🔥 change this */
+}

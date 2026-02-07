@@ -3,6 +3,9 @@ const scriptURL =
   "https://script.google.com/macros/s/AKfycby0Cg2ZO1qlLRCid3MdYhaP4Kn5Zk35MjIGGCtOX9RqJtReaSpbq9y8aACuHklW5jVfmg/exec";
 let isSyncing = false;
 
+let avgTotalChartInstance = null;
+let teamScatterChartInstance = null;
+
 // ================= PAGE LOAD =================
 document.addEventListener("DOMContentLoaded", () => {
   loadSheetData();
@@ -86,6 +89,7 @@ async function loadSheetData() {
     renderTable(analyzed); // your existing table
     renderAvgTotalChart(analyzed); // <-- new chart
     renderRankingLadder(analyzed); // optional ranking ladder
+    renderTeamScatterPlot(analyzed); //  consistancey scatter chart
   } catch (err) {
     console.error("Failed to load sheet:", err);
   }
@@ -279,21 +283,22 @@ function analyzeTeams(rows) {
 function renderAvgTotalChart(teamData) {
   const ctx = document.getElementById("avgTotalChart").getContext("2d");
 
-  const sortedTeams = [...teamData].sort((a, b) => b.AvgTotal - a.AvgTotal);
+  // Destroy old chart if it exists
+  if (avgTotalChartInstance) {
+    avgTotalChartInstance.destroy();
+  }
 
-  const labels = sortedTeams.map((t) => t.Team);
-  const data = sortedTeams.map((t) => t.AvgTotal);
-
-  new Chart(ctx, {
+  // Create new chart and save it in the variable
+  avgTotalChartInstance = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: labels,
+      labels: teamData.map((t) => t.Team),
       datasets: [
         {
           label: "Avg Total Score",
-          data: data,
-          backgroundColor: "rgba(52, 152, 219, 0.7)", // change bar color here
-          borderColor: "rgba(41, 128, 185, 1)", // border color
+          data: teamData.map((t) => t.AvgTotal),
+          backgroundColor: "rgba(52, 152, 219, 0.7)",
+          borderColor: "rgba(41, 128, 185, 1)",
           borderWidth: 1,
         },
       ],
@@ -310,17 +315,9 @@ function renderAvgTotalChart(teamData) {
       scales: {
         y: {
           beginAtZero: true,
-          ticks: {
-            color: "#ffffff", // y-axis numbers color
-            font: { size: 14 },
-          },
+          ticks: { color: "#ffffff", font: { size: 14 } },
         },
-        x: {
-          ticks: {
-            color: "#ffffff", // team names color
-            font: { size: 14 },
-          },
-        },
+        x: { ticks: { color: "#ffffff", font: { size: 14 } } },
       },
     },
   });
@@ -411,12 +408,19 @@ function filterDataTeamsWithData() {
     opt.textContent = team;
     select.appendChild(opt);
   });
+  // Auto-select first team if any
+  if (teamsWithData.length) {
+    select.value = teamsWithData[0];
+    updateTeamPieCharts(teamsWithData[0]);
+    updateTeamScatterChart(teamsWithData[0]);
+  }
 }
 
 // Team selection listener
 document.addEventListener("change", (e) => {
   if (e.target.id === "dataTeamSelect") {
     updateTeamPieCharts(e.target.value);
+    updateTeamScatterChart(e.target.value);
   }
 });
 
@@ -486,4 +490,63 @@ function drawPie(canvasId, title, scored, missed, saveRef, oldChart) {
   });
 
   saveRef(chart);
+}
+
+let scatterChartInstance = null; // store the chart instance globally
+
+function updateTeamScatterChart(team) {
+  if (!team || !latestRows.length) return;
+
+  // Filter rows for this team
+  const teamRows = latestRows
+    .filter((r) => r.TeamNum === team)
+    .map((r, idx) => ({
+      x: idx + 1, // match number
+      y: Number(r.AutoScore || 0) + Number(r.TeleScore || 0),
+    }));
+
+  const ctx = document.getElementById("teamScatterChart").getContext("2d");
+
+  // Destroy old chart if it exists
+  if (teamScatterChartInstance) teamScatterChartInstance.destroy();
+
+  // Create new scatter chart
+  teamScatterChartInstance = new Chart(ctx, {
+    type: "scatter",
+    data: {
+      datasets: [
+        {
+          label: `Team ${team}`,
+          data: teamRows,
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: "#ffffff" } },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return `Match ${context.parsed.x}: ${context.parsed.y} pts`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          title: { display: true, text: "Match #", color: "#ffffff" },
+          ticks: { color: "#ffffff" },
+          beginAtZero: true,
+        },
+        y: {
+          title: { display: true, text: "Total Score", color: "#ffffff" },
+          ticks: { color: "#ffffff" },
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 }

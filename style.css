@@ -191,3 +191,11 @@ button {
   width: 500px; /* 🔥 change this */
   height: 500px; /* 🔥 change this */
 }
+
+#teamScatterChart {
+  width: 80%;
+  max-width: 800px;
+  height: 400px;
+  margin: auto;
+  display: block;
+}
